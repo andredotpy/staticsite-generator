@@ -1,12 +1,12 @@
 import re
 from textnode import (
-    TextNode, 
-    text_type_text, 
-    text_type_image, 
+    TextNode,
+    text_type_text,
+    text_type_image,
     text_type_link,
     text_type_bold,
     text_type_italic,
-    text_type_code
+    text_type_code,
 )
 
 
@@ -41,7 +41,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
 def split_nodes_image(old_nodes):
     new_nodes = []
-    pattern = r'!(.*?)(.*?\))'
+    pattern = r"!(\[.*?\))"
     for node in old_nodes:
         if node.text_type != text_type_text:
             new_nodes.append(node)
@@ -51,16 +51,22 @@ def split_nodes_image(old_nodes):
         for text in node_splited:
             if len(text) < 1:
                 continue
-            if text in [f'[{img_tup[0]}]({img_tup[1]})' for img_tup in extracted_image]:
-                new_nodes.append(TextNode(re.findall(r"\[(.*?)\]", text)[0], text_type_image, re.findall(r"\((.*?)\)", text)[0]))
+            if text in [f"[{img_tup[0]}]({img_tup[1]})" for img_tup in extracted_image]:
+                new_nodes.append(
+                    TextNode(
+                        re.findall(r"\[(.*?)\]", text)[0],
+                        text_type_image,
+                        re.findall(r"\((.*?)\)", text)[0],
+                    )
+                )
             else:
                 new_nodes.append(TextNode(text, text_type_text))
     return new_nodes
 
-        
+
 def split_nodes_link(old_nodes):
     new_nodes = []
-    pattern = r"(\[.*\[?\))"
+    pattern = r"(\[.*?\))"
     for node in old_nodes:
         if node.text_type != text_type_text:
             new_nodes.append(node)
@@ -70,8 +76,16 @@ def split_nodes_link(old_nodes):
         for text in node_splited:
             if len(text) < 1:
                 continue
-            if text in [f'[{link_tup[0]}]({link_tup[1]})' for link_tup in extracted_links]:
-                new_nodes.append(TextNode(re.findall(r"\[(.*?)\]", text)[0], text_type_link, re.findall(r"\((.*?)\)", text)[0]))
+            if text in [
+                f"[{link_tup[0]}]({link_tup[1]})" for link_tup in extracted_links
+            ]:
+                new_nodes.append(
+                    TextNode(
+                        re.findall(r"\[(.*?)\]", text)[0],
+                        text_type_link,
+                        re.findall(r"\((.*?)\)", text)[0],
+                    )
+                )
             else:
                 new_nodes.append(TextNode(text, text_type_text))
     return new_nodes

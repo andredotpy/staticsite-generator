@@ -14,7 +14,7 @@ from textnode import (
     text_type_italic,
     text_type_code,
     text_type_image,
-    text_type_link
+    text_type_link,
 )
 
 
@@ -107,7 +107,10 @@ class TestInlineMarkdown(unittest.TestCase):
         extracted_links = extract_markdown_links(text)
         self.assertEqual(
             extracted_links,
-            [("link", "https://www.example.com"), ("another", "https://www.example.com/another")]
+            [
+                ("link", "https://www.example.com"),
+                ("another", "https://www.example.com/another"),
+            ],
         )
 
     def test_split_nodes_image(self):
@@ -120,12 +123,18 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
             [
                 TextNode("This is text with an ", text_type_text),
-                TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+                TextNode(
+                    "image",
+                    text_type_image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+                ),
                 TextNode(" and another ", text_type_text),
                 TextNode(
-                    "second image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png"
+                    "second image",
+                    text_type_image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png",
                 ),
-            ]
+            ],
         )
 
     def test_split_nodes_image_with_no_image(self):
@@ -135,8 +144,7 @@ class TestInlineMarkdown(unittest.TestCase):
         )
         new_nodes = split_nodes_image([node])
         self.assertEqual(
-            new_nodes,
-            [TextNode("This is a text without an image", text_type_text)]
+            new_nodes, [TextNode("This is a text without an image", text_type_text)]
         )
 
     def test_split_nodes_image_starting_with_image(self):
@@ -148,12 +156,18 @@ class TestInlineMarkdown(unittest.TestCase):
         self.assertEqual(
             new_nodes,
             [
-                TextNode("Stating with image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+                TextNode(
+                    "Stating with image",
+                    text_type_image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+                ),
                 TextNode(" and another ", text_type_text),
                 TextNode(
-                    "second image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png"
+                    "second image",
+                    text_type_image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png",
                 ),
-            ]
+            ],
         )
 
     def test_text_to_textnodes(self):
@@ -169,11 +183,16 @@ class TestInlineMarkdown(unittest.TestCase):
                 TextNode(" word and a ", text_type_text),
                 TextNode("code block", text_type_code),
                 TextNode(" and an ", text_type_text),
-                TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+                TextNode(
+                    "image",
+                    text_type_image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+                ),
                 TextNode(" and a ", text_type_text),
                 TextNode("link", text_type_link, "https://boot.dev"),
-            ]
+            ],
         )
+
 
 if __name__ == "__main__":
     unittest.main()
